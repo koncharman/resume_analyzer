@@ -8,6 +8,29 @@ from utils.data_loader import (
 
 from models.ollama_model import ask_ollama
 
+def get_occupation_skills(
+    occupation_uri,
+    relations,
+    skills
+):
+
+    # Find skills connected to occupation
+    occupation_relations = relations[
+        relations["occupationUri"] == occupation_uri
+    ]
+
+    # Get skill URIs
+    skill_uris = occupation_relations[
+        "skillUri"
+    ].tolist()
+
+
+    # Retrieve skill information
+    matched_skills = skills[
+        skills["conceptUri"].isin(skill_uris)
+    ]
+
+    return matched_skills
 
 # -------------------------------------------------
 # Page configuration
@@ -103,6 +126,13 @@ with tab1:
         == selected_occupation
     ].iloc[0]
 
+    occupation_uri = occupation["conceptUri"]
+
+    required_skills = get_occupation_skills(
+        occupation_uri,
+        relations,
+        skills
+    )
 
     st.subheader(selected_occupation)
 
@@ -118,6 +148,17 @@ with tab1:
 
         st.dataframe(
             occupation.to_frame()
+        )
+
+        st.subheader("⭐ Required Skills")
+
+        st.dataframe(
+            required_skills[
+                [
+                    "preferredLabel",
+                    "description"
+                ]
+            ]
         )
 
 
