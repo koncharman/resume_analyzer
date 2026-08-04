@@ -13,3 +13,5 @@ def ask_ollama(prompt):
     )
 
     return response["message"]["content"]
+
+
