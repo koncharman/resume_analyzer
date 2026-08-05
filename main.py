@@ -3,37 +3,17 @@ import streamlit as st
 from utils.data_loader import (
     load_skills,
     load_occupations,
-    load_relations
+    load_relations,
+    load_skill_relations
 )
+
+from utils.esco_relations import get_skill_occupations , get_occupation_skills , get_skill_skills
 
 from rag.document_loader import create_esco_documents
 from rag.vector_store import create_vector_store
 from rag.rag_chain import ask_rag
 
 
-def get_occupation_skills(
-    occupation_uri,
-    relations,
-    skills
-):
-
-    # Find skills connected to occupation
-    occupation_relations = relations[
-        relations["occupationUri"] == occupation_uri
-    ]
-
-    # Get skill URIs
-    skill_uris = occupation_relations[
-        "skillUri"
-    ].tolist()
-
-
-    # Retrieve skill information
-    matched_skills = skills[
-        skills["conceptUri"].isin(skill_uris)
-    ]
-
-    return matched_skills
 
 # -------------------------------------------------
 # Page configuration
@@ -56,11 +36,11 @@ def load_data():
     skills = load_skills()
     occupations = load_occupations()
     relations = load_relations()
+    relations_skills= load_skill_relations()
+    return skills, occupations, relations , relations_skills
 
-    return skills, occupations, relations
 
-
-skills, occupations, relations = load_data()
+skills, occupations, relations , relations_skills = load_data()
 
 
 @st.cache_resource
@@ -238,7 +218,11 @@ with tab2:
 
                 answer = ask_rag(
                     vector_store,
-                    question
+                    question,
+                    skills,
+                    occupations,
+                    relations,
+                    relations_skills
                 )
 
             st.subheader(

@@ -27,3 +27,11 @@ def load_relations():
     )
 
     return df
+
+def load_skill_relations():
+    df = pd.read_excel(
+        "data/skillSkillRelations_en.ods",
+        engine="odf"
+    )
+
+    return df

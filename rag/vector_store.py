@@ -52,10 +52,10 @@ def create_vector_store(documents):
 def get_retriever(vector_store):
 
     return vector_store.as_retriever(
-        search_type="similarity",  # search_type="mmr"
+        search_type="mmr",  # search_type="mmr" "similarity"
 
         search_kwargs={
-            "k": 5 #"k": 10-15
+            "k": 15-20 #"k": 10-15
         }
     )
 

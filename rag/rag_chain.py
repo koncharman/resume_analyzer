@@ -6,10 +6,16 @@ from rag.retriever import (
     format_documents
 )
 
+from utils.esco_relations import get_skill_occupations , get_occupation_skills , get_skill_skills
+
 
 def ask_rag(
     vector_store,
-    question
+    question,
+    skills,
+    occupations,
+    relations,
+    relations_skills
 ):
     """
     Complete RAG pipeline:
@@ -29,12 +35,61 @@ def ask_rag(
         documents
     )
 
+    # Expand using ESCO relationships
+    for doc in documents:
+
+        # Occupation document
+        if doc.metadata["type"] == "occupation":
+
+            occupation_uri = doc.metadata["uri"]
+
+            occupation_skills = get_occupation_skills(
+                occupation_uri,
+                relations,
+                skills
+            )
+
+            context += "\n\nRequired ESCO skills:\n"
+
+            for _, skill in occupation_skills.iterrows():
+                context += (
+                    f"- {skill['preferredLabel']}\n"
+                )
+
+
+        # Skill document
+        elif doc.metadata["type"] == "skill":
+
+            skill_uri = doc.metadata["uri"]
+
+            related_occupations = get_skill_occupations(
+                skill_uri,
+                relations,
+                occupations
+            )
+
+            context += "\n\nRelated ESCO occupations:\n"
+
+            for _, occupation in related_occupations.iterrows():
+                context += (
+                    f"- {occupation['preferredLabel']}\n"
+                )
+
+            related_skills = get_skill_skills(skill_uri,relations_skills,skills)
+
+            context += "\n\nRelated ESCO skills:\n"
+
+            for _, skill in related_skills.iterrows():
+                context += (
+                    f"- {skill['preferredLabel']}\n"
+                )
+
 
     # Create prompt
     prompt = f"""
                 You are an AI career advisor.
                 
-                Use the following ESCO knowledge:
+                Use the following ESCO (European Skills, Competences, Qualifications and Occupations) knowledge:
                 
                 {context}
                 
