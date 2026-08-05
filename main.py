@@ -6,7 +6,10 @@ from utils.data_loader import (
     load_relations
 )
 
-from models.ollama_model import ask_ollama
+from rag.document_loader import create_esco_documents
+from rag.vector_store import create_vector_store
+from rag.rag_chain import ask_rag
+
 
 def get_occupation_skills(
     occupation_uri,
@@ -59,6 +62,26 @@ def load_data():
 
 skills, occupations, relations = load_data()
 
+
+@st.cache_resource
+def create_rag_index(skills, occupations):
+
+    documents = create_esco_documents(
+        skills,
+        occupations
+    )
+
+    vector_store = create_vector_store(
+        documents
+    )
+
+    return vector_store
+
+
+vector_store = create_rag_index(
+    skills,
+    occupations
+)
 
 # -------------------------------------------------
 # Title
@@ -199,62 +222,24 @@ with tab2:
     )
 
 
-    occupation_names = sorted(
-        occupations["preferredLabel"]
-        .dropna()
-        .unique()
-    )
-
-
-    llm_occupation = st.selectbox(
-        "Choose context occupation",
-        occupation_names,
-        key="llm_occ"
-    )
-
-
-    selected = occupations[
-        occupations["preferredLabel"]
-        == llm_occupation
-    ].iloc[0]
-
-
     question = st.text_area(
         "Your question",
         placeholder=
         "Example: What should I learn to become this professional?"
     )
 
-
-    if st.button(
-        "Ask Ollama"
-    ):
+    if st.button("Ask Ollama"):
 
         if question:
 
-            prompt = f"""
-                            You are an AI career advisor.
-                            
-                            Occupation:
-                            {llm_occupation}
-                            
-                            Occupation description:
-                            {selected['description']}
-                            
-                            User question:
-                            {question}
-                            
-                            Give a practical answer.
-                            """
-
             with st.spinner(
-                "Thinking..."
+                    "Thinking..."
             ):
 
-                answer = ask_ollama(
-                    prompt
+                answer = ask_rag(
+                    vector_store,
+                    question
                 )
-
 
             st.subheader(
                 "Answer"
@@ -265,7 +250,6 @@ with tab2:
             )
 
         else:
-
             st.warning(
                 "Please enter a question."
             )
