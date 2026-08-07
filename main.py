@@ -8,11 +8,12 @@ from utils.data_loader import (
 )
 
 from utils.esco_relations import get_skill_occupations , get_occupation_skills , get_skill_skills
+from utils.pdf_reader import extract_pdf_text
+
 
 from rag.document_loader import create_esco_documents
 from rag.vector_store import create_vector_store
 from rag.rag_chain import ask_rag
-
 
 
 # -------------------------------------------------
@@ -245,23 +246,144 @@ with tab2:
 
 with tab3:
 
-    st.header(
-        "📄 Resume Analyzer"
-    )
+    st.header("📄 Resume Analyzer")
 
+    st.write(
+        "Upload a PDF resume. The app will extract its text, "
+        "retrieve relevant ESCO skills and occupations, and "
+        "ask Ollama to produce a career analysis."
+    )
 
     uploaded_file = st.file_uploader(
         "Upload your CV",
-        type=["pdf"]
+        type=["pdf"],
+        key="resume_uploader",
     )
 
+    if uploaded_file is not None:
 
-    if uploaded_file:
+        st.success(f"Uploaded: {uploaded_file.name}")
 
-        st.success(
-            "Resume uploaded."
-        )
+        try:
+            resume_text = extract_pdf_text(uploaded_file)
 
-        st.info(
-            "Next step: extract PDF text and compare with ESCO skills."
-        )
+        except ValueError as error:
+            st.error(str(error))
+            resume_text = ""
+
+        except Exception as error:
+            st.error(
+                f"An unexpected error occurred while reading the PDF: "
+                f"{error}"
+            )
+            resume_text = ""
+
+        if resume_text:
+
+            st.info(
+                f"Extracted approximately "
+                f"{len(resume_text.split())} words."
+            )
+
+            with st.expander("Preview extracted CV text"):
+                st.text_area(
+                    "Extracted text",
+                    value=resume_text,
+                    height=350,
+                    disabled=True,
+                    label_visibility="collapsed",
+                )
+
+            analysis_type = st.selectbox(
+                "Choose analysis type",
+                [
+                    "Complete CV analysis",
+                    "Suggest suitable occupations",
+                    "Identify skills",
+                    "Identify missing skills",
+                    "Create a learning roadmap",
+                    "Generate interview questions",
+                ],
+                key="resume_analysis_type",
+            )
+
+            target_occupation = st.text_input(
+                "Target occupation (optional)",
+                placeholder=(
+                    "Example: AI engineer, data scientist, "
+                    "software developer"
+                ),
+                key="target_occupation",
+            )
+
+            additional_request = st.text_area(
+                "Additional request (optional)",
+                placeholder=(
+                    "Example: Focus on skills I should learn "
+                    "during the next six months."
+                ),
+                key="resume_additional_request",
+            )
+
+            if st.button(
+                    "Analyze CV",
+                    key="analyze_resume_button",
+                    type="primary",
+            ):
+
+                target_text = (
+                    target_occupation.strip()
+                    if target_occupation.strip()
+                    else "No specific target occupation was provided."
+                )
+
+                request_text = (
+                    additional_request.strip()
+                    if additional_request.strip()
+                    else "No additional instructions were provided."
+                )
+
+                rag_question = f"""
+            Analyze the following resume using the ESCO occupations,
+            skills and occupation-skill and skill-skill relationships retrieved by the system.
+
+            Requested analysis:
+            {analysis_type}
+
+            Target occupation:
+            {target_text}
+
+            Additional user request:
+            {request_text}
+
+            Resume:
+            {resume_text}
+
+            """
+
+                try:
+                    with st.spinner(
+                            "Retrieving ESCO knowledge and analyzing CV..."
+                    ):
+
+                        answer = ask_rag(
+                            vector_store,
+                            rag_question,
+                            skills,
+                            occupations,
+                            relations,
+                            relations_skills
+                        )
+
+                    st.subheader("Analysis")
+
+                    st.markdown(answer)
+
+                except Exception as error:
+                    st.error(
+                        "The CV analysis failed. Make sure Ollama "
+                        "is running and the selected model is installed."
+                    )
+
+                    with st.expander("Technical error"):
+                        st.exception(error)
