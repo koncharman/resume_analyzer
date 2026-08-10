@@ -99,7 +99,7 @@ def ask_rag(
                 
                 
                 Give a practical answer based on the ESCO information. 
-                Highlight with the skills and occupations found on user question and the given ESCO knowledge.
+                Highlight with bold the skills and occupations found on user question and the given ESCO knowledge.
                 """
 
 
