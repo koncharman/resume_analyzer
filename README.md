@@ -56,7 +56,7 @@ flowchart TD
     classDef io fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
 
     class ES,A,B,C,D app;
-    class VEC,RAG,DS,OLL llmrag;
+    class VEC,RAG,DS,OLL,ND llmrag;
     class E,F,H,I,AN io;
 ```
 
