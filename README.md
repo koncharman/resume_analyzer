@@ -12,47 +12,42 @@ flowchart TD
     ES["📄 ESCO Taxonomy"]
     ES --> ESS["Skills"]
     ES --> ESO["Occupations"]
+    ESS --> ESSS['Skill - SKill Relationships']
     ESS --> ESSO['Skills required in Occupations']
     ESO --> ESSO
-    ESS --> ESSS['Skill - SKill Relationships']
 
     A["🤖 AI Resume Analyzer"]
     
     A --> B["📚 ESCO Explorer"]
     A --> C["💬 LLM Discussion"]
-    A --> D["📄 Resume Analyzer"]
+    A --> D["👤 Resume Analyzer"]
 
     ES --> B
     B --> E["Occupation Lookup"]
     E --> F["Skills required in Occupation"]
 
+    ES --> VEC["Vector Store with Skill and Occupation Embeddings"]
+
     C --> H["User Question"]
 
     D --> I["Upload CV"]
-    I --> J["Resume Parsing"]
-    J --> K["Extracted Skills"]
 
-    G --> L["RAG Pipeline"]
-    H --> L
-    K --> L
+    H --> J['Document Retrieval']
+    I --> J
 
-    L --> M["Document Loader"]
-    M --> N["Embeddings"]
-    N --> O["Vector Store"]
-    O --> P["Retriever"]
+    J --> RAG['Extract Occupations and Skills']
 
-    P --> Q["Relevant ESCO Context"]
-    Q --> R["Prompt Construction"]
-    R --> S["🦙 Ollama"]
-    S --> T["Career Recommendations"]
+    RAG --> DS["Find Additional Relevant Occupations and Skills"]
+    ES --> DS
+    
 
     classDef app fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
     classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
     classDef llm fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
 
-    class A,B,C,D,ES app;
-    class L,M,N,O,P,Q,R rag;
-    class S,T llm;
+    class A,B,C,D,ES,VEC app;
+    class  rag;
+    class  llm;
 ```
 
 ## Main Features
