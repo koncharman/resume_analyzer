@@ -1,31 +1,47 @@
 # AI Resume Analyzer
 
-An AI-powered career analysis application that combines **ESCO occupational data**, **retrieval-augmented generation (RAG)**, **local LLM inference with Ollama**, and **Streamlit** to explore occupations, retrieve relevant skills, answer career questions, and analyze uploaded resumes.
+An AI-powered career analysis application that combines **ESCO (European Skills, Competences, Qualifications and Occupations) skill and occupation data**, **retrieval-augmented generation (RAG)**, **local LLM inference with Ollama**, and **Streamlit** to explore occupations and skills, answer career questions, and analyze uploaded resumes.
 
 ## Overview
 
-The project demonstrates how structured domain knowledge can be combined with vector retrieval and a local language model.
+The project demonstrates how structured domain knowledge can be combined with vector retrieval and LLMs.
 
-```text
-User question / CV
-        ↓
-ESCO knowledge
-        ↓
-Document creation
-        ↓
-Embeddings
-        ↓
-Vector store
-        ↓
-Retriever
-        ↓
-Relevant occupations / skills
-        ↓
-Prompt construction
-        ↓
-Ollama
-        ↓
-Career-oriented answer
+## Architecture
+
+```mermaid
+flowchart TD
+
+    A["AI Resume Analyzer"]
+
+    A --> B["ESCO Explorer"]
+    A --> C["Career Assistant"]
+    A --> D["Resume Analyzer"]
+
+    B --> E["Occupation Lookup"]
+    E --> F["Skill Relationships"]
+
+    C --> G["User Question"]
+
+    D --> H["Upload CV"]
+    H --> I["Resume Parsing"]
+    I --> J["Extracted Skills"]
+
+    F --> K["ESCO Knowledge"]
+    G --> L["RAG Pipeline"]
+    J --> L
+    K --> L
+
+    L --> M["Document Loader"]
+    L --> N["Vector Store"]
+    L --> O["Retriever"]
+
+    M --> N
+    N --> O
+
+    O --> P["Relevant ESCO Context"]
+    P --> Q["Prompt Construction"]
+    Q --> R["Ollama"]
+    R --> S["Grounded Career Recommendations"]
 ```
 
 ## Main Features
