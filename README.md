@@ -12,8 +12,8 @@ flowchart TD
     ES["📄 ESCO Taxonomy"]
     ES --> ESS["Skills"]
     ES --> ESO["Occupations"]
-    ESS --> ESSS['Skill - SKill Relationships']
-    ESS --> ESSO['Skills required in Occupations']
+    ESS --> ESSS["Skill - SKill Relationships"]
+    ESS --> ESSO["Skills required in Occupations"]
     ESO --> ESSO
 
     A["🤖 AI Resume Analyzer"]
@@ -36,6 +36,7 @@ flowchart TD
     I --> J
 
     J --> RAG["Extract Occupations and Skills"]
+    VEC --> RAG
 
     RAG --> DS["Find Additional Relevant Occupations and Skills"]
     ES --> DS
