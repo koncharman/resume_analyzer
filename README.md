@@ -53,7 +53,7 @@ flowchart TD
 
     class ES,A,B,C,D app;
     class VEC,RAG,DS rag;
-    class H,I llm;
+    class H,I,AN,OLL llm;
 ```
 
 ## Main Features
