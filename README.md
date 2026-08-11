@@ -26,7 +26,8 @@ flowchart TD
     B --> E["Occupation Lookup"]
     E --> F["Skills required in Occupation"]
 
-    ES --> VEC["Vector Store with Skill and Occupation Embeddings"]
+    ES --> ST ["Sentence Transformers"]
+    ST --> VEC["Vector Store with Skill and Occupation Embeddings"]
 
     C --> H["User Question"]
 
@@ -35,7 +36,9 @@ flowchart TD
     H --> J["Document Retrieval"]
     I --> J
 
-    J --> RAG["Extract Occupations and Skills"]
+    J --> ST
+
+    ST --> RAG["Extract Occupations and Skills"]
     VEC --> RAG
 
     RAG --> DS["Find Additional Relevant Occupations and Skills"]
