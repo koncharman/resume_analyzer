@@ -45,9 +45,9 @@ flowchart TD
     classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
     classDef llm fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
 
-    class A,B,C,D,ES,VEC app;
-    class  rag;
-    class  llm;
+    class ES, A, B, C app;
+    class VEC, RAG, DS rag;
+    class H llm;
 ```
 
 ## Main Features
