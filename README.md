@@ -32,7 +32,7 @@ flowchart TD
 
     D --> I["Upload CV"]
 
-    H --> J['Document Retrieval']
+    H --> J["Document Retrieval"]
     I --> J
 
     J --> RAG["Extract Occupations and Skills"]
@@ -41,8 +41,11 @@ flowchart TD
     RAG --> DS["Find Additional Relevant Occupations and Skills"]
     ES --> DS
 
-    DS --> CX["Create prompt with Context"]
+    DS --> CX["Create Prompt with Context"]
     RAG --> CX
+
+    OLL["Ollama Model"] --> AN["Generate Answer"]
+    CX --> AN
     
     classDef app fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
     classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
