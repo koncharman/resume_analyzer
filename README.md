@@ -7,41 +7,46 @@ An AI-powered career analysis application that combines **ESCO (European Skills,
 The project demonstrates how structured domain knowledge can be combined with vector retrieval and LLMs.
 
 ## Architecture
-
 ```mermaid
 flowchart TD
 
-    A["AI Resume Analyzer"]
+    A["🤖 AI Resume Analyzer"]
 
-    A --> B["ESCO Explorer"]
-    A --> C["Career Assistant"]
-    A --> D["Resume Analyzer"]
+    A --> B["📚 ESCO Explorer"]
+    A --> C["💬 Career Assistant"]
+    A --> D["📄 Resume Analyzer"]
 
     B --> E["Occupation Lookup"]
     E --> F["Skill Relationships"]
+    F --> G["ESCO Knowledge"]
 
-    C --> G["User Question"]
+    C --> H["User Question"]
 
-    D --> H["Upload CV"]
-    H --> I["Resume Parsing"]
-    I --> J["Extracted Skills"]
+    D --> I["Upload CV"]
+    I --> J["Resume Parsing"]
+    J --> K["Extracted Skills"]
 
-    F --> K["ESCO Knowledge"]
     G --> L["RAG Pipeline"]
-    J --> L
+    H --> L
     K --> L
 
     L --> M["Document Loader"]
-    L --> N["Vector Store"]
-    L --> O["Retriever"]
+    M --> N["Embeddings"]
+    N --> O["Vector Store"]
+    O --> P["Retriever"]
 
-    M --> N
-    N --> O
+    P --> Q["Relevant ESCO Context"]
+    Q --> R["Prompt Construction"]
+    R --> S["🦙 Ollama"]
+    S --> T["Career Recommendations"]
 
-    O --> P["Relevant ESCO Context"]
-    P --> Q["Prompt Construction"]
-    Q --> R["Ollama"]
-    R --> S["Grounded Career Recommendations"]
+    classDef app fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef llm fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+
+    class A,B,C,D app;
+    class L,M,N,O,P,Q,R rag;
+    class S,T llm;
 ```
 
 ## Main Features
