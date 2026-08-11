@@ -35,7 +35,7 @@ flowchart TD
     H --> J['Document Retrieval']
     I --> J
 
-    J --> RAG['Extract Occupations and Skills']
+    J --> RAG["Extract Occupations and Skills"]
 
     RAG --> DS["Find Additional Relevant Occupations and Skills"]
     ES --> DS
