@@ -49,11 +49,11 @@ flowchart TD
     
     classDef app fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
     classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
-    classDef llm fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef io fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
 
     class ES,A,B,C,D app;
-    class VEC,RAG,DS rag;
-    class H,I,AN,OLL llm;
+    class VEC,RAG,DS,OLL llmrag;
+    class H,I,AN io;
 ```
 
 ## Main Features
