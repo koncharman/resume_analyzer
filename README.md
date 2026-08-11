@@ -116,15 +116,11 @@ pip install -r requirements.txt
 streamlit run main.py
 ```
 
-## Technologies
+## Main Technologies
 
-- Python
 - Streamlit
-- pandas
-- ESCO
 - LangChain
 - sentence-transformers
-- vector retrieval
 - Ollama
 
 
