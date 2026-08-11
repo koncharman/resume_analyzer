@@ -9,16 +9,22 @@ The project demonstrates how structured domain knowledge can be combined with ve
 ## Architecture
 ```mermaid
 flowchart TD
+    ES["📄 ESCO Taxonomy"]
+    ES --> ESS["Skills"]
+    ES --> ESO["Occupations"]
+    ESS --> ESSO['Skills required in Occupations']
+    ESO --> ESSO
+    ESS --> ESSS['Skill - SKill Relationships']
 
     A["🤖 AI Resume Analyzer"]
-
+    
     A --> B["📚 ESCO Explorer"]
-    A --> C["💬 Career Assistant"]
+    A --> C["💬 LLM Discussion"]
     A --> D["📄 Resume Analyzer"]
 
+    ES --> B
     B --> E["Occupation Lookup"]
-    E --> F["Skill Relationships"]
-    F --> G["ESCO Knowledge"]
+    E --> F["Skills required in Occupation"]
 
     C --> H["User Question"]
 
