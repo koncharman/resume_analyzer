@@ -50,7 +50,7 @@ flowchart TD
     classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
     classDef llm fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
 
-    class A,B,C,D app;
+    class A,B,C,D,ES app;
     class L,M,N,O,P,Q,R rag;
     class S,T llm;
 ```
