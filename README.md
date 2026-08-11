@@ -126,6 +126,5 @@ streamlit run main.py
 - sentence-transformers
 - vector retrieval
 - Ollama
-- pytest
 
 
