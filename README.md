@@ -37,8 +37,9 @@ flowchart TD
     I --> J
 
     J --> ST
-    
-    ST --> RAG["Extract Occupations and Skills"]
+
+    ST --> ND["New Document Embeddings"]
+    ND --> RAG["Extract Occupations and Skills"]
     VEC --> RAG
 
     RAG --> DS["Find Additional Relevant Occupations and Skills"]
