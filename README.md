@@ -70,7 +70,7 @@ Upload a CV and analyze it against ESCO knowledge for:
 
 ## ESCO Data
 
-Expected source files:
+Expected source files (create data/ and retrieve data from ESCO):
 
 ```text
 skill_en.ods
