@@ -35,6 +35,8 @@ def ask_rag(
         documents
     )
 
+    context="Found ESCO Occupations and Skills:\n\n"+context
+
     # Expand using ESCO relationships
     for doc in documents:
 
@@ -49,7 +51,7 @@ def ask_rag(
                 skills
             )
 
-            context += f"\n\nFor Occupation {doc.metadata['name']}, Required ESCO skills:\n"
+            context += f"\n\nFor Occupation {doc.metadata['name']}, Related ESCO skills:\n"
 
             for _, skill in occupation_skills.iterrows():
                 context += (
@@ -89,17 +91,18 @@ def ask_rag(
     prompt = f"""
                 You are an AI career advisor.
                 
-                Use the following ESCO (European Skills, Competences, Qualifications and Occupations) knowledge:
-                
+                Use the following Found and Related European Skills, Competences, Qualifications and Occupations (ESCO) knowledge (ESCO Skills and Occupations):
                 {context}
                 
+                Notes:
+                Highlight only the previous Found and Related ESCO Skills and ESCO Occupations with bold.
+                Separate Found from Related context.
                 
-                User question:
+                Everything that follows is not ESCO.
+                
+                User input:
                 {question}
                 
-                
-                Give a practical answer based on the ESCO information. 
-                Highlight with bold the skills and occupations found on user question and the given ESCO knowledge.
                 """
 
 

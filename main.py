@@ -342,9 +342,6 @@ with tab3:
                 )
 
                 rag_question = f"""
-            Analyze the following resume using the ESCO occupations,
-            skills and occupation-skill and skill-skill relationships retrieved by the system.
-
             Requested analysis:
             {analysis_type}
 

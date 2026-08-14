@@ -6,6 +6,10 @@ An AI-powered career analysis application that combines **ESCO (European Skills,
 
 The project demonstrates how structured domain knowledge can be combined with vector retrieval and LLMs.
 
+## Screenshosts
+
+You can review some representative views of the tool in the folder screeshots/.
+
 ## Architecture
 ```mermaid
 flowchart TD
