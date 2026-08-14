@@ -158,26 +158,16 @@ with tab1:
             occupation.to_frame()
         )
 
-        st.subheader("⭐ Required Skills")
-
-        st.dataframe(
-            required_skills[
-                [
-                    "preferredLabel",
-                    #"altLabels",
-                    "description"
-                ]
-            ]
-        )
 
 
     with st.expander(
-        "Skills preview"
+        "Related Skills"
     ):
         st.dataframe(
             required_skills[
                 [
                     "preferredLabel",
+                    "altLabels",
                     "description"
                 ]
             ]
@@ -185,7 +175,7 @@ with tab1:
 
 
     with st.expander(
-        "Relations preview"
+        "Relatied Skills TYpe"
     ):
         occupation_relations = relations[
             relations["occupationUri"]
