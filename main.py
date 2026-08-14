@@ -160,6 +160,7 @@ with tab1:
             required_skills[
                 [
                     "preferredLabel",
+                    #"altLabels",
                     "description"
                 ]
             ]
@@ -169,24 +170,31 @@ with tab1:
     with st.expander(
         "Skills preview"
     ):
-
         st.dataframe(
-            skills.head(20)
+            required_skills[
+                [
+                    "preferredLabel",
+                    "description"
+                ]
+            ]
         )
 
 
     with st.expander(
         "Relations preview"
     ):
+        occupation_relations = relations[
+            relations["occupationUri"]
+            == occupation_uri
+            ]
 
         st.write(
-            relations.columns.tolist()
+            occupation_relations.columns.tolist()
         )
 
         st.dataframe(
-            relations.head(20)
+            occupation_relations
         )
-
 
 # =================================================
 # TAB 2 - LLM DISCUSSION
