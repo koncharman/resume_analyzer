@@ -145,10 +145,6 @@ with tab1:
     st.subheader(selected_occupation)
 
 
-    st.write(
-        occupation["description"]
-    )
-
 
     with st.expander(
         "Occupation information"
@@ -175,7 +171,7 @@ with tab1:
 
 
     with st.expander(
-        "Relatied Skills TYpe"
+        "Related Skills Type"
     ):
         occupation_relations = relations[
             relations["occupationUri"]

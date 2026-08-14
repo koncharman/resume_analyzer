@@ -25,7 +25,7 @@ Occupation:
 {occupation['preferredLabel']}
 
 Alternative labels:
-{occupation.get('alternativeLabels', '')}
+{occupation.get('altLabels', '')}
 
 Description:
 {occupation['description']}
@@ -55,7 +55,7 @@ Skill:
 {skill['preferredLabel']}
 
 Alternative labels:
-{skill.get('alternativeLabels', '')}
+{skill.get('altLabels', '')}
 
 Description:
 {skill['description']}
