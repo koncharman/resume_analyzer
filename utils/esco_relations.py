@@ -51,15 +51,24 @@ def get_skill_skills(
     relations,
     skills
 ):
+
+    # Find related skills
     skill_relations_org = relations[
         relations["originalSkillUri"] == skill_uri
         ]
 
+    # Find related skills
     skill_relations_rel = relations[
         relations["relatedSkillUri"] == skill_uri
         ]
 
+    # Combine related skills
     uris_skills=skill_relations_rel['originalSkillUri'].to_list()+skill_relations_org["relatedSkillUri"].to_list()
+
+    # Remove duplicates
+    uris_skills = list(
+        dict.fromkeys(uris_skills)
+    )
 
     # Retrieve skill information
     matched_skills = skills[
