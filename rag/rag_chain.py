@@ -49,7 +49,7 @@ def ask_rag(
                 skills
             )
 
-            context += "\n\nRequired ESCO skills:\n"
+            context += f"\n\nFor Occupation {doc.metadata['name']}, Required ESCO skills:\n"
 
             for _, skill in occupation_skills.iterrows():
                 context += (
@@ -68,7 +68,7 @@ def ask_rag(
                 occupations
             )
 
-            context += "\n\nRelated ESCO occupations:\n"
+            context += f"\n\nFor Skill {doc.metadata['name']}, Related ESCO occupations:\n"
 
             for _, occupation in related_occupations.iterrows():
                 context += (
@@ -77,7 +77,7 @@ def ask_rag(
 
             related_skills = get_skill_skills(skill_uri,relations_skills,skills)
 
-            context += "\n\nRelated ESCO skills:\n"
+            context += f"\n\nFor Skill {doc.metadata['name']},Related ESCO skills:\n"
 
             for _, skill in related_skills.iterrows():
                 context += (
