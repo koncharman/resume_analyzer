@@ -108,9 +108,13 @@ with tab1:
     )
 
     st.sidebar.write(
-        f"Relations: {len(relations)}"
+        f"Occupation-Skill Relations: {len(relations)}"
     )
 
+
+    st.sidebar.write(
+        f"Skill-Skill Relations: {len(relations_skills)}"
+    )
 
     occupation_names = sorted(
         occupations["preferredLabel"]
