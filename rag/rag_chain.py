@@ -12,7 +12,7 @@ from utils.esco_relations import get_skill_occupations , get_occupation_skills ,
 
 
 def sent_split(text):
-    split_text = re.split(r'[.,;:·]+', text)#\n
+    split_text = re.split(r'[.,;:·\n]+', text)#\n
 
     split_text = [
         part.strip()
@@ -31,6 +31,7 @@ def ask_rag(
     relations,
     relations_skills,
     context_input=None,
+    add_relations=True
 ):
     """
     Complete RAG pipeline:
@@ -59,55 +60,56 @@ def ask_rag(
 
     context="Found ESCO Occupations and Skills:\n\n"+context
 
-    # Expand using ESCO relationships
-    for doc in documents:
+    if add_relations:
 
-        # Occupation document
-        if doc.metadata["type"] == "occupation":
+        # Expand using ESCO relationships
+        for doc in documents:
 
-            occupation_uri = doc.metadata["uri"]
+            # Occupation document
+            if doc.metadata["type"] == "occupation":
 
-            occupation_skills = get_occupation_skills(
-                occupation_uri,
-                relations,
-                skills
-            )
+                occupation_uri = doc.metadata["uri"]
 
-            context += f"\n\nFor Occupation {doc.metadata['name']}, Related ESCO skills:\n"
-
-            for _, skill in occupation_skills.iterrows():
-                context += (
-                    f"- {skill['preferredLabel']}\n"
+                occupation_skills = get_occupation_skills(
+                    occupation_uri,
+                    relations,
+                    skills
                 )
 
+                context += f"\n\nFor Occupation {doc.metadata['name']}, Related ESCO skills:\n"
 
-        # Skill document
-        elif doc.metadata["type"] == "skill":
+                for _, skill in occupation_skills.iterrows():
+                    context += (
+                        f"- {skill['preferredLabel']}\n"
+                    )
 
-            skill_uri = doc.metadata["uri"]
 
-            related_occupations = get_skill_occupations(
-                skill_uri,
-                relations,
-                occupations
-            )
+            # Skill document
+            elif doc.metadata["type"] == "skill":
 
-            context += f"\n\nFor Skill {doc.metadata['name']}, Related ESCO occupations:\n"
+                skill_uri = doc.metadata["uri"]
 
-            for _, occupation in related_occupations.iterrows():
-                context += (
-                    f"- {occupation['preferredLabel']}\n"
+                related_occupations = get_skill_occupations(
+                    skill_uri,
+                    relations,
+                    occupations
                 )
-            #'''
-            related_skills = get_skill_skills(skill_uri,relations_skills,skills)
 
-            context += f"\n\nFor Skill {doc.metadata['name']},Related ESCO skills:\n"
+                context += f"\n\nFor Skill {doc.metadata['name']}, Related ESCO occupations:\n"
 
-            for _, skill in related_skills.iterrows():
-                context += (
-                    f"- {skill['preferredLabel']}\n"
-                )
-            #'''
+                for _, occupation in related_occupations.iterrows():
+                    context += (
+                        f"- {occupation['preferredLabel']}\n"
+                    )
+
+                related_skills = get_skill_skills(skill_uri,relations_skills,skills)
+
+                context += f"\n\nFor Skill {doc.metadata['name']},Related ESCO skills:\n"
+
+                for _, skill in related_skills.iterrows():
+                    context += (
+                        f"- {skill['preferredLabel']}\n"
+                    )
 
 
     # Create prompt
@@ -115,14 +117,19 @@ def ask_rag(
                 You are an AI career advisor.
                 
                 Use the following Found and Related European Skills, Competences, Qualifications and Occupations (ESCO) knowledge (ESCO Skills and Occupations):
-                Highlight the ESCO Occupations and ESCO Skills with bold.
+
                 {context}
+                
+                Notes:
+                Highlight the ESCO Occupations with bold. 
+                Highlight the ESCO Skills with bold.
                 
                 User input:
                 {question}
                 
                 """
 
+    #print (prompt)
 
     # Send to Ollama
     answer = ask_ollama(

@@ -355,6 +355,8 @@ with tab3:
             Additional user request:
             {request_text}
             
+            Resume:
+            {resume_text}
             """
 
                 try:
@@ -369,7 +371,8 @@ with tab3:
                             occupations,
                             relations,
                             relations_skills,
-                            context_input=resume_text
+                            context_input=resume_text,
+                            add_relations=False
                         )
 
                     st.subheader("Analysis")

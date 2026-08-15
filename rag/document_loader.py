@@ -20,6 +20,8 @@ def create_esco_documents(
 
     for _, occupation in occupations.iterrows():
 
+        text=occupation['preferredLabel']
+        '''
         text = f"""
 Occupation:
 {occupation['preferredLabel']}
@@ -30,6 +32,8 @@ Alternative labels:
 Description:
 {occupation['description']}
 """
+        '''
+
 
 
         documents.append(

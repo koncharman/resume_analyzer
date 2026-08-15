@@ -52,12 +52,12 @@ def create_vector_store(documents):
 def get_retriever(vector_store):
 
     return vector_store.as_retriever(
-        search_type="mmr",  # search_type="mmr" "similarity"
+        search_type="similarity",  # search_type="mmr" "similarity"
 
         search_kwargs={
-            "k": 20, #"k": 5
-            "fetch_k": 50,
-
+            "k": 5, #"k": 5
+            #"fetch_k": 5,
+            "score_threshold": 0.3
         }
     )
 
