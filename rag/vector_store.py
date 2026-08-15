@@ -55,8 +55,8 @@ def get_retriever(vector_store):
         search_type="mmr",  # search_type="mmr" "similarity"
 
         search_kwargs={
-            "k": 10, #"k": 5
-            "fetch_k": 30,
+            "k": 20, #"k": 5
+            "fetch_k": 50,
 
         }
     )

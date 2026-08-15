@@ -355,9 +355,6 @@ with tab3:
             Additional user request:
             {request_text}
             
-            Resume:
-            {resume_text}
-            
             """
 
                 try:
@@ -372,7 +369,7 @@ with tab3:
                             occupations,
                             relations,
                             relations_skills,
-                            context_input=rag_question
+                            context_input=resume_text
                         )
 
                     st.subheader("Analysis")
@@ -387,3 +384,4 @@ with tab3:
 
                     with st.expander("Technical error"):
                         st.exception(error)
+

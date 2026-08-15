@@ -1,12 +1,26 @@
 
 from models.ollama_model import ask_ollama
 
+import re
+
 from rag.retriever import (
     retrieve_documents,
     format_documents
 )
 
 from utils.esco_relations import get_skill_occupations , get_occupation_skills , get_skill_skills
+
+
+def sent_split(text):
+    split_text = re.split(r'[.,;:·]+', text)#\n
+
+    split_text = [
+        part.strip()
+        for part in split_text
+        if part.strip()
+    ]
+
+    return split_text
 
 
 def ask_rag(
@@ -22,15 +36,22 @@ def ask_rag(
     Complete RAG pipeline:
     question -> retrieval -> Ollama
     """
+    documents=[]
+    for text in sent_split(context_input):
 
+        # Retrieve ESCO information
+        documents_temp = retrieve_documents(
+            vector_store,
+            text
+        )
+        documents.extend(documents_temp)
 
-    # Retrieve ESCO information
-    documents = retrieve_documents(
-        vector_store,
-        context_input
+    documents = list(
+        {
+            doc.metadata["uri"]: doc
+            for doc in documents
+        }.values()
     )
-
-
     # Convert documents to context
     context = format_documents(
         documents
@@ -77,8 +98,8 @@ def ask_rag(
                 context += (
                     f"- {occupation['preferredLabel']}\n"
                 )
-            '''
-              related_skills = get_skill_skills(skill_uri,relations_skills,skills)
+            #'''
+            related_skills = get_skill_skills(skill_uri,relations_skills,skills)
 
             context += f"\n\nFor Skill {doc.metadata['name']},Related ESCO skills:\n"
 
@@ -86,7 +107,7 @@ def ask_rag(
                 context += (
                     f"- {skill['preferredLabel']}\n"
                 )
-            '''
+            #'''
 
 
     # Create prompt

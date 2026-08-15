@@ -42,3 +42,5 @@ def extract_pdf_text(uploaded_file) -> str:
         )
 
     return full_text
+
+

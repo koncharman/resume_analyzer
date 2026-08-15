@@ -50,16 +50,21 @@ Description:
 
     for _, skill in skills.iterrows():
 
+        text=skill['preferredLabel']
+
+        '''
         text = f"""
-Skill:
-{skill['preferredLabel']}
+        Skill:
+        {skill['preferredLabel']}
+        
+        Alternative labels:
+        {skill.get('altLabels', '')}
+        
+        Description:
+        {skill['description']}
+        """
+        '''
 
-Alternative labels:
-{skill.get('altLabels', '')}
-
-Description:
-{skill['description']}
-"""
 
 
         documents.append(
