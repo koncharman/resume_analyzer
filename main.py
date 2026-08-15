@@ -221,7 +221,8 @@ with tab2:
                     skills,
                     occupations,
                     relations,
-                    relations_skills
+                    relations_skills,
+                    context_input=question
                 )
 
             st.subheader(
@@ -342,6 +343,9 @@ with tab3:
                 )
 
                 rag_question = f"""
+            A CV-Resume was analyzed. 
+            Use the previous ESCO information to do what is asked in the following information.
+            
             Requested analysis:
             {analysis_type}
 
@@ -350,10 +354,10 @@ with tab3:
 
             Additional user request:
             {request_text}
-
+            
             Resume:
             {resume_text}
-
+            
             """
 
                 try:
@@ -367,7 +371,8 @@ with tab3:
                             skills,
                             occupations,
                             relations,
-                            relations_skills
+                            relations_skills,
+                            context_input=rag_question
                         )
 
                     st.subheader("Analysis")

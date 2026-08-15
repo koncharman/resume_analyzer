@@ -15,7 +15,8 @@ def ask_rag(
     skills,
     occupations,
     relations,
-    relations_skills
+    relations_skills,
+    context_input=None,
 ):
     """
     Complete RAG pipeline:
@@ -26,7 +27,7 @@ def ask_rag(
     # Retrieve ESCO information
     documents = retrieve_documents(
         vector_store,
-        question
+        context_input
     )
 
 
@@ -76,8 +77,8 @@ def ask_rag(
                 context += (
                     f"- {occupation['preferredLabel']}\n"
                 )
-
-            related_skills = get_skill_skills(skill_uri,relations_skills,skills)
+            '''
+              related_skills = get_skill_skills(skill_uri,relations_skills,skills)
 
             context += f"\n\nFor Skill {doc.metadata['name']},Related ESCO skills:\n"
 
@@ -85,6 +86,7 @@ def ask_rag(
                 context += (
                     f"- {skill['preferredLabel']}\n"
                 )
+            '''
 
 
     # Create prompt
@@ -92,13 +94,8 @@ def ask_rag(
                 You are an AI career advisor.
                 
                 Use the following Found and Related European Skills, Competences, Qualifications and Occupations (ESCO) knowledge (ESCO Skills and Occupations):
+                Highlight the ESCO Occupations and ESCO Skills with bold.
                 {context}
-                
-                Notes:
-                Highlight only the previous Found and Related ESCO Skills and ESCO Occupations with bold.
-                Separate Found from Related context.
-                
-                Everything that follows is not ESCO.
                 
                 User input:
                 {question}
